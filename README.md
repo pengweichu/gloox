@@ -1,2 +1,2 @@
 # gloox
-Modified from gloox(https://camaya.net/gloox/) for send PUSH message to Google Firebase
+The modified from gloox(https://camaya.net/gloox/) for SEND PUSH to GOOGLE FIREBASE
