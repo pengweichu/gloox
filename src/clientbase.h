@@ -38,6 +38,7 @@
 #include <windows.h>
 #define SECURITY_WIN32
 #include <security.h>
+#include <sspi.h>
 #endif
 
 namespace gloox
@@ -288,6 +289,13 @@ namespace gloox
        * @return @b True if authentication has been carried out @b and was successful, @b false otherwise.
        */
       bool authed() const { return m_authed; }
+
+      /**
+       * Sends the given data unchecked over the underlying transport connection. Use at your own risk.
+       * The server will check any data received anyway and disconnect if something is wrong.
+       * @param xml The data to send.
+       */
+      void send( const std::string& xml );
 
       /**
        * Returns the current connection status.
@@ -836,12 +844,6 @@ namespace gloox
        */
       bool hasTls();
 
-      /**
-       * Sends the given data unchecked over the underlying transport connection. Use at your own risk.
-       * The server will check any data received anyway and disconnect if something is wrong.
-       * @param xml The data to send.
-       */
-      void send( const std::string& xml );
 
       /**
        * This function checks if there are any unacknowledged Tags in the send queue and resends
