@@ -212,7 +212,7 @@ namespace gloox
     return true;
   }
 
-  void InBandBytestream::handleMessage( const Message& msg, MessageSession* /*session*/ )
+  void InBandBytestream::handleMessage( const Message& msg, const std::string & rawMsg, MessageSession* /*session*/ )
   {
     if( msg.from() != m_target || !m_handler )
       return;

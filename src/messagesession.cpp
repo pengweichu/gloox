@@ -56,7 +56,10 @@ namespace gloox
       (*it)->filter( msg );
 
     if( m_messageHandler )
-      m_messageHandler->handleMessage( msg, this );
+    {
+      std::string rawMsg;
+      m_messageHandler->handleMessage( msg, rawMsg, this );
+    }
   }
 
   void MessageSession::send( const std::string& message )

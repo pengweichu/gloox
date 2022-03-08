@@ -728,7 +728,7 @@ namespace gloox
 
   void Client::rosterFilled()
   {
-    sendPresence( m_presence );
+ //   sendPresence( m_presence );
     notifyStreamEvent( StreamEventFinished );
     notifyOnConnect();
   }

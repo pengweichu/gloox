@@ -248,6 +248,13 @@ namespace gloox
        */
       void send( Tag* tag );
 
+	  /**
+	  * Sends the given data unchecked over the underlying transport connection. Use at your own risk.
+	  * The server will check any data received anyway and disconnect if something is wrong.
+	  * @param xml The data to send.
+	  */
+	  void send(const std::string& xml);
+
       /**
        * Sends the given IQ stanza. The given IqHandler is registered to be notified of replies. This,
        * of course, only works for IQs of type get or set. An ID is added if necessary.
@@ -836,12 +843,6 @@ namespace gloox
        */
       bool hasTls();
 
-      /**
-       * Sends the given data unchecked over the underlying transport connection. Use at your own risk.
-       * The server will check any data received anyway and disconnect if something is wrong.
-       * @param xml The data to send.
-       */
-      void send( const std::string& xml );
 
       /**
        * This function checks if there are any unacknowledged Tags in the send queue and resends
@@ -1000,7 +1001,7 @@ namespace gloox
       CompressionBase* getDefaultCompression();
 
       void notifyIqHandlers( IQ& iq );
-      void notifyMessageHandlers( Message& msg );
+      void notifyMessageHandlers( Message& msg, const std::string & rawMsg );
       void notifyPresenceHandlers( Presence& presence );
       void notifySubscriptionHandlers( Subscription& s10n );
       void notifyTagHandlers( Tag* tag );

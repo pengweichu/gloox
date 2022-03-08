@@ -84,7 +84,7 @@ namespace gloox
       virtual void handleIqID( const IQ& iq, int context );
 
       // reimplemented from MessageHandler
-      virtual void handleMessage( const Message& msg, MessageSession* session = 0 );
+      virtual void handleMessage( const Message& msg, const std::string & rawMsg, MessageSession* session = 0 );
 
     private:
 #ifdef INBANDBYTESTREAM_TEST

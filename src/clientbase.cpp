@@ -272,7 +272,7 @@ namespace gloox
             m_seFactory->addExtensions( msg, tag );
             if( msg.hasEmbeddedStanza() )
               m_seFactory->addExtensions( *msg.embeddedStanza(), msg.embeddedTag() );
-            notifyMessageHandlers( msg );
+            notifyMessageHandlers( msg, tag->xml());
             ++m_stats.messageStanzasReceived;
             if( m_smContext >= CtxSMEnabled )
               ++m_smHandled;
@@ -1009,6 +1009,7 @@ namespace gloox
     send( tag, false, true );
   }
 
+
   void ClientBase::send( Tag* tag, bool queue, bool del )
   {
     if( !tag )
@@ -1666,7 +1667,7 @@ namespace gloox
     }
   }
 
-  void ClientBase::notifyMessageHandlers( Message& msg )
+  void ClientBase::notifyMessageHandlers( Message& msg, const std::string & rawMsg)
   {
     if( m_mucInvitationHandler )
     {
@@ -1747,7 +1748,8 @@ namespace gloox
       MessageHandlerList::const_iterator it = m_messageHandlers.begin();
       for( ; it != m_messageHandlers.end(); ++it )
       {
-        (*it)->handleMessage( msg );
+        (*it)->handleMessage( msg, rawMsg );
+
       }
       // FIXME and reinstantiate this:
 //       util::ForEach( m_messageHandlers, &MessageHandler::handleMessage, msg ); // FIXME remove for 1.1

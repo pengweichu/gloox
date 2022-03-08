@@ -49,7 +49,7 @@ namespace gloox
        * holds a pointer to that MessageSession.
        * @since 1.0
        */
-      virtual void handleMessage( const Message& msg, MessageSession* session = 0 ) = 0;
+      virtual void handleMessage( const Message& msg, const std::string & rawMsg, MessageSession* session = 0 ) = 0;
 
   };
 

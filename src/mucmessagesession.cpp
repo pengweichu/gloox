@@ -33,7 +33,10 @@ namespace gloox
   void MUCMessageSession::handleMessage( Message& msg )
   {
     if( m_messageHandler )
-      m_messageHandler->handleMessage( msg );
+    {
+      std::string rawMsg;
+      m_messageHandler->handleMessage( msg, rawMsg );
+    }
   }
 
   void MUCMessageSession::send( const std::string& message )
