@@ -2,7 +2,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.50)
-AC_INIT([gloox], [1.0.20], [js@camaya.net])
+AC_INIT([gloox], [1.0.24], [js@camaya.net])
 AC_CONFIG_SRCDIR(src/gloox.cpp)
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 
@@ -312,11 +312,11 @@ AC_MSG_CHECKING([whether to enable debug])
 AC_MSG_RESULT($debug)
 
 dnl getaddrinfo
-getaddrinfo="no"
+getaddrinfo="yes"
 AC_ARG_ENABLE( getaddrinfo,
-               [AC_HELP_STRING([--enable-getaddrinfo],
-                               [use getaddrinfo for dns lookups [default=no]])],
-               [getaddrinfo="yes"] )
+               [AC_HELP_STRING([--disable-getaddrinfo],
+                  [do not use getaddrinfo for dns lookups [default use getaddrinfo]])],
+               [getaddrinfo="no"])
 if test "x$getaddrinfo" = "xyes"; then
     AC_CHECK_FUNCS(getaddrinfo,,getaddrinfo="no")
 fi
