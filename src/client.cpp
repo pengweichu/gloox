@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2004-2017 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2004-2019 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -156,7 +156,7 @@ namespace gloox
       {
         logInstance().err( LogAreaClassClient, "Client is configured to require"
                                 " TLS but either the server didn't offer TLS or"
-                                " TLS support is not compiled in." );
+                                " TLS support is not compiled into gloox." );
         disconnect( ConnTlsNotAvailable );
       }
       else if( m_tls > TLSDisabled && m_encryption && !m_encryptionActive
@@ -601,7 +601,7 @@ namespace gloox
       m_smContext = CtxSMEnable;
       m_smHandled = 0;
     }
-    else if( m_smContext == CtxSMEnabled )
+    else if( m_smContext == CtxSMEnabled && m_smResume )
     {
       notifyStreamEvent( StreamEventSMResume );
       Tag* r = new Tag( "resume" );
@@ -610,7 +610,10 @@ namespace gloox
       r->addAttribute( "previd", m_smId );
       send( r );
       m_smContext = CtxSMResume;
-    }
+    } 
+    else
+      disconnect();
+ 
   }
 
   void Client::ackStreamManagement()

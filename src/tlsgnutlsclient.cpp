@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2005-2017 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2005-2019 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -55,7 +55,7 @@ namespace gloox
     }
 
 #if GNUTLS_VERSION_NUMBER >= 0x020600
-    int ret = gnutls_priority_set_direct( *m_session, "SECURE128:+PFS:+COMP-ALL:+VERS-TLS-ALL:-VERS-SSL3.0:+SIGN-ALL:+CURVE-ALL", 0 );
+    int ret = gnutls_priority_set_direct( *m_session, "SECURE128:+PFS:+COMP-ALL:+VERS-TLS-ALL:-VERS-SSL3.0:-VERS-TLS1.3:+SIGN-ALL:+CURVE-ALL", 0 );
     if( ret != GNUTLS_E_SUCCESS )
       return false;
 #else
@@ -76,6 +76,7 @@ namespace gloox
     gnutls_mac_set_priority( *m_session, macPriority );
 #endif
 
+    gnutls_certificate_set_x509_system_trust( m_credentials );
     gnutls_credentials_set( *m_session, GNUTLS_CRD_CERTIFICATE, m_credentials );
 
     gnutls_transport_set_ptr( *m_session, static_cast<gnutls_transport_ptr_t>( this ) );
@@ -145,14 +146,12 @@ namespace gloox
     if( certListSize > 1 && ( gnutls_x509_crt_check_issuer( cert[certListSize-1], cert[certListSize-1] ) > 0 ) )
       certListSize--;
 
-    bool chain = true;
     for( unsigned int i=1; !error && ( i<certListSize ); ++i )
     {
-      chain = error = !verifyAgainst( cert[i-1], cert[i] );
+      error = !verifyAgainst( cert[i-1], cert[i] );
+      if( error )
+        m_certInfo.status |= CertInvalid;
     }
-    if( !chain )
-      m_certInfo.status |= CertInvalid;
-    m_certInfo.chain = chain;
 
     m_certInfo.chain = verifyAgainstCAs( cert[certListSize-1], 0 /*CAList*/, 0 /*CAListSize*/ );
 

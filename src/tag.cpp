@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2005-2017 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2005-2019 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -97,7 +97,7 @@ namespace gloox
     if( !m_xmlns.empty() )
       return m_xmlns;
 
-    if( m_parent )
+    if( m_parent && !m_prefix.empty() )
       return m_parent->xmlns( m_prefix );
 
     return EmptyString;

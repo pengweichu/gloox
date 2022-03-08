@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2005-2017 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2005-2019 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -55,7 +55,7 @@ namespace gloox
       return false;
 
 #if GNUTLS_VERSION_NUMBER >= 0x020600
-    int ret = gnutls_priority_set_direct( *m_session, "SECURE128:+PFS:+COMP-ALL:+VERS-TLS-ALL:-VERS-SSL3.0:+SIGN-ALL:+CURVE-ALL", 0 );
+    int ret = gnutls_priority_set_direct( *m_session, "SECURE128:+PFS:+COMP-ALL:+VERS-TLS-ALL:-VERS-SSL3.0:+SIGN-ALL:+CURVE-ALL:+ANON-ECDH:+ANON-DH", 0 );
     if( ret != GNUTLS_E_SUCCESS )
       return false;
 #else

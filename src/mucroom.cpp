@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006-2017 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2006-2019 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -471,6 +471,9 @@ namespace gloox
 
       if( m_actor )
         new Tag( i, "actor", "jid", *m_actor );
+
+      if( m_reason )
+        new Tag( i, "reason", *m_reason );
 
       if( m_flags & FlagNonAnonymous )
         new Tag( t, "status", "code", "100" );

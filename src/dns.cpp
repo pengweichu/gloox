@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2005-2017 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2005-2019 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -22,6 +22,7 @@
 #endif
 
 #include <stdio.h>
+#include <string.h>
 
 #if ( !defined( _WIN32 ) && !defined( _WIN32_WCE ) ) || defined( __SYMBIAN32__ )
 # include <netinet/in.h>
@@ -259,7 +260,10 @@ namespace gloox
     {
       int fd = DNS::connect( runp, logInstance );
       if( fd >= 0 )
+      {
+        freeaddrinfo( results );
         return fd;
+      }
 
       runp = runp->ai_next;
     }

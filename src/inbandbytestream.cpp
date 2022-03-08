@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006-2017 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2006-2019 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -193,7 +193,7 @@ namespace gloox
     {
       m_open = false;
       returnError( iq.from(), iq.id(), StanzaErrorTypeModify, StanzaErrorItemNotFound );
-      return false;
+      return true;
     }
 
     if( m_lastChunkReceived == 65535 )
@@ -203,7 +203,7 @@ namespace gloox
     {
       m_open = false;
       returnError( iq.from(), iq.id(), StanzaErrorTypeModify, StanzaErrorBadRequest );
-      return false;
+      return true;
     }
 
     returnResult( iq.from(), iq.id() );

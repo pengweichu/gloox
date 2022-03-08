@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2017 by Jakob Schröter <js@camaya.net>
+ *  Copyright (c) 2004-2019 by Jakob Schröter <js@camaya.net>
  *  This file is part of the gloox library. http://camaya.net/gloox
  *
  *  This software is distributed under a license. The full license
@@ -63,9 +63,6 @@ class MessageTest : public MessageSessionHandler, ConnectionListener, LogHandler
       j->disco()->setVersion( "messageTest", GLOOX_VERSION, "Linux" );
       j->disco()->setIdentity( "client", "bot" );
       j->disco()->addFeature( XMLNS_CHAT_STATES );
-      StringList ca;
-      ca.push_back( "/path/to/cacert.crt" );
-      j->setCACerts( ca );
 
       j->logInstance().registerLogHandler( LogLevelDebug, LogAreaAll, this );
 
@@ -126,7 +123,7 @@ class MessageTest : public MessageSessionHandler, ConnectionListener, LogHandler
               info.compression.c_str() );
       printf( "from: %s", ctime( &from ) );
       printf( "to:   %s", ctime( &to ) );
-      return true;
+      return ( info.status == CertOk );
     }
 
     virtual void handleMessage( const Message& msg, MessageSession * /*session*/ )

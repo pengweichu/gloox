@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2009-2017 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2009-2019 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -22,8 +22,11 @@
 #include <cstdlib>
 
 #include <openssl/err.h>
-#include <openssl/comp.h>
 #include <openssl/x509v3.h>
+
+#ifndef OPENSSL_NO_COMP
+  #include <openssl/comp.h>
+#endif
 
 #include <string.h>
 
@@ -56,7 +59,9 @@ namespace gloox
       SSL_library_init();
 #endif // OPENSSL_VERSION_NUMBER < 0x10100000
 
+#ifndef OPENSSL_NO_COMP
     SSL_COMP_add_compression_method( 193, COMP_zlib() );
+#endif // OPENSSL_NO_COMP
 
     OpenSSL_add_all_algorithms();
 

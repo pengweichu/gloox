@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2005-2017 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2005-2019 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -247,13 +247,6 @@ namespace gloox
        * @param tag The Tag to send.
        */
       void send( Tag* tag );
-
-	  /**
-	  * Sends the given data unchecked over the underlying transport connection. Use at your own risk.
-	  * The server will check any data received anyway and disconnect if something is wrong.
-	  * @param xml The data to send.
-	  */
-	  void send(const std::string& xml);
 
       /**
        * Sends the given IQ stanza. The given IqHandler is registered to be notified of replies. This,
@@ -843,6 +836,12 @@ namespace gloox
        */
       bool hasTls();
 
+      /**
+       * Sends the given data unchecked over the underlying transport connection. Use at your own risk.
+       * The server will check any data received anyway and disconnect if something is wrong.
+       * @param xml The data to send.
+       */
+      void send( const std::string& xml );
 
       /**
        * This function checks if there are any unacknowledged Tags in the send queue and resends

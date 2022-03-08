@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2017 by Jakob Schröter <js@camaya.net>
+ *  Copyright (c) 2004-2019 by Jakob Schröter <js@camaya.net>
  *  This file is part of the gloox library. http://camaya.net/gloox
  *
  *  This software is distributed under a license. The full license
@@ -13,6 +13,7 @@
 #include "../../tag.h"
 #define ROSTERMANAGER_TEST
 #include "../../rostermanager.h"
+#include "../../rosteritemdata.h"
 #include "../../iq.h"
 #include "../../stanzaextensionfactory.h"
 using namespace gloox;
@@ -94,6 +95,25 @@ int main( int /*argc*/, char** /*argv*/ )
     RosterManager::Query rq( q );
     t = rq.tag();
     if( *t != *q || rq.roster().size() != 2 )
+    {
+      ++fail;
+      fprintf( stderr, "test '%s' failed\n", name.c_str() );
+    }
+    delete t;
+    t = 0;
+    delete q;
+  }
+
+  // -------
+  {
+    name = "empty subscription";
+    Tag* q = new Tag( "query" );
+    q->setXmlns( XMLNS_ROSTER );
+    Tag* i = new Tag( q, "item", "jid", "foo1" );
+    i->addAttribute( "name", "name1" );
+    RosterManager::Query rq( q );
+    t = rq.tag();
+    if( rq.roster().size() != 1 || rq.roster().back()->subscription() != S10nNone )
     {
       ++fail;
       fprintf( stderr, "test '%s' failed\n", name.c_str() );

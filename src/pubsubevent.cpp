@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2017 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2007-2019 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -33,6 +33,13 @@ namespace gloox
     Event::ItemOperation::ItemOperation( const ItemOperation& right )
       : retract( right.retract ), item( right.item ),
         payload( right.payload ? right.payload->clone() : 0 )
+    {
+    }
+
+    Event::Event()
+      : StanzaExtension( ExtPubSubEvent ), m_type( PubSub::EventUnknown ),
+        m_subscriptionIDs( 0 ), m_config( 0 ),
+        m_itemOperations( 0 )
     {
     }
 

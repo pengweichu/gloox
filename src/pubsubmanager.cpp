@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2017 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2007-2019 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -546,7 +546,8 @@ namespace gloox
       else if( m_ctx == CreateNode )
       {
         Tag* c = new Tag( t, "create" );
-        c->addAttribute( "node", m_node );
+        if( !m_node.empty() )
+          c->addAttribute( "node", m_node );
         Tag* config = new Tag( t, "configure" );
         if( m_options.df )
           config->addChild( m_options.df->tag() );
@@ -830,13 +831,14 @@ namespace gloox
                                            DataForm* config,
                                            ResultHandler* handler )
     {
-      if( !m_parent || !handler || !service || node.empty() )
+      if( !m_parent || !handler || !service )
         return EmptyString;
 
       const std::string& id = m_parent->getID();
       IQ iq( IQ::Set, service, id );
       PubSub* ps = new PubSub( CreateNode );
-      ps->setNode( node );
+      if( !node.empty() )
+        ps->setNode( node );
       ps->setOptions( EmptyString, config );
       iq.addExtension( ps );
 
@@ -1032,7 +1034,18 @@ namespace gloox
               if( !ps )
                 return;
               SubscriptionMap sm = ps->subscriptions();
-              if( !sm.empty() )
+              if( sm.empty() )
+              {
+                /* If the reply is an error, it will not contain a
+                   "subscription" child.  It may however contain the
+                   original "subscribe" request.  If that is the case, then
+                   we can still retrieve the node and JID of the request and
+                   notify the handler callback of the error.  */
+                if( ps->context() == Subscription )
+                  rh->handleSubscriptionResult( id, service, ps->node(), "", ps->jid(),
+                                                SubscriptionInvalid, error );
+              }
+              else
               {
                 SubscriptionMap::const_iterator it = sm.begin();
                 const SubscriptionList& lst = (*it).second;
@@ -1085,7 +1098,7 @@ namespace gloox
             case PublishItem:
             {
               const PubSub* ps = iq.findExtension<PubSub>( ExtPubSub );
-              rh->handleItemPublication( id, service, "",
+              rh->handleItemPublication( id, service, ps->node(),
                                          ps ? ps->items() : ItemList(),
                                          error );
               break;
@@ -1165,11 +1178,11 @@ namespace gloox
                   if( it != m_nopTrackMap.end() )
                   {
                     const std::string& node = (*it).second;
+                    const PubSub* ps = iq.findExtension<PubSub>( ExtPubSub );
                     switch( context )
                     {
                       case SetSubscriptionOptions:
                       {
-                        const PubSub* ps = iq.findExtension<PubSub>( ExtPubSub );
                         if( ps )
                         {
                           rh->handleSubscriptionOptionsResult( id, service,
@@ -1194,7 +1207,10 @@ namespace gloox
                         rh->handleNodeConfigResult( id, service, node, error );
                         break;
                       case CreateNode:
-                        rh->handleNodeCreation( id, service, node, error );
+                        if( ps )
+                          rh->handleNodeCreation( id, service, ps->node(), error );
+                        else
+                          rh->handleNodeCreation( id, service, node, error );
                         break;
                       case DeleteNode:
                         rh->handleNodeDeletion( id, service, node, error );

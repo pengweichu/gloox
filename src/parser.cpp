@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2004-2017 by Jakob Schröter <js@camaya.net>
+  Copyright (c) 2004-2019 by Jakob Schröter <js@camaya.net>
   This file is part of the gloox library. http://camaya.net/gloox
 
   This software is distributed under a license. The full license
@@ -28,8 +28,7 @@ namespace gloox
 
   Parser::~Parser()
   {
-    delete m_root;
-    delete m_xmlnss;
+    cleanup( true );
   }
 
   Parser::DecodeState Parser::decode( std::string::size_type& pos, const std::string& data )

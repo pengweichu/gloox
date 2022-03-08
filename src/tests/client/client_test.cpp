@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2004-2017 by Jakob Schröter <js@camaya.net>
+ *  Copyright (c) 2004-2019 by Jakob Schröter <js@camaya.net>
  *  This file is part of the gloox library. http://camaya.net/gloox
  *
  *  This software is distributed under a license. The full license
@@ -207,7 +207,7 @@ const char* ConnectionImpl::m_msgs[6][12] =
           "<mechanism>DIGEST-MD5</mechanism>"
         "</mechanisms>"
       "</stream:features>",
-      "<stream:error><xml-not-well-formed xmlns='urn:ietf:params:xml:ns:xmpp-streams'/></stream:error>",
+      "<stream:error><not-well-formed xmlns='urn:ietf:params:xml:ns:xmpp-streams'/></stream:error>",
       0,
     },
     { // connection/auth goes ok. basic xep-0198 (stream management) ack'ing
